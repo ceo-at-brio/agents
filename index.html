@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Church Communications Agent — Product Proposal | Lorenzo</title>
+<style>
+  :root{
+    --ink:#1a1c2c;
+    --ink-soft:#4a4f66;
+    --muted:#767c95;
+    --line:#e3e6f0;
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --brand:#4b3f8f;
+    --brand-soft:#efeafc;
+    --brand-2:#0f7d6b;
+    --brand-2-soft:#e5f5f1;
+    --gold:#a9822b;
+    --gold-soft:#fdf5e3;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(26,28,44,.05), 0 8px 24px rgba(26,28,44,.06);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:56px 0;border-top:1px solid var(--line)}
+  section:first-of-type{border-top:none}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:22px;height:58px}
+  .topbar .brand{font-weight:700;font-size:14px;letter-spacing:-.01em;white-space:nowrap}
+  .topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{
+    font-size:13px;color:var(--ink-soft);text-decoration:none;
+    padding:6px 11px;border-radius:8px;white-space:nowrap;font-weight:500;
+  }
+  .topbar nav a:hover{background:var(--brand-soft);color:var(--brand)}
+
+  .cover{
+    background:linear-gradient(160deg,#2c2555 0%,#4b3f8f 55%,#6b5cb8 100%);
+    color:#fff;padding:76px 0 68px;border:none;
+  }
+  .cover .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+    padding:6px 13px;border-radius:99px;margin-bottom:22px;font-weight:600;
+  }
+  .cover h1{
+    font-size:clamp(30px,4.4vw,48px);line-height:1.12;margin:0 0 16px;
+    letter-spacing:-.028em;font-weight:700;max-width:20ch;
+  }
+  .cover .sub{font-size:17px;color:rgba(255,255,255,.86);max-width:64ch;margin:0 0 34px}
+  .cover .sub strong{color:#fff;font-weight:600}
+  .meta{display:flex;flex-wrap:wrap;gap:14px}
+  .meta div{
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+    padding:11px 16px;border-radius:10px;min-width:150px;
+  }
+  .meta span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:3px;font-weight:600}
+  .meta b{font-size:14px;font-weight:600}
+
+  .kicker{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand);font-weight:700;margin-bottom:10px;
+  }
+  h2{font-size:clamp(23px,2.6vw,31px);line-height:1.2;margin:0 0 12px;letter-spacing:-.022em;font-weight:700}
+  h3{font-size:18px;margin:34px 0 12px;letter-spacing:-.012em;font-weight:650}
+  h4{font-size:14.5px;margin:22px 0 8px;font-weight:650;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:76ch;margin:0 0 8px}
+  p{margin:0 0 14px}
+  a{color:var(--brand)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .stat b{display:block;font-size:27px;line-height:1.1;letter-spacing:-.03em;color:var(--brand);font-weight:700}
+  .stat span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+
+  .actbadge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--brand-soft);color:var(--brand);
+    font-size:12px;font-weight:700;letter-spacing:.02em;
+    padding:5px 12px;border-radius:99px;margin-bottom:14px;
+  }
+
+  .sysflow{margin-top:26px}
+  .sys-block{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px;box-shadow:var(--shadow);
+  }
+  .sys-block.lock{border-color:#c9e9e0;background:linear-gradient(180deg,#f3fbf8 0%,#fff 55%)}
+  .sys-block.stretch{border-color:#f0e2bd;background:linear-gradient(180deg,#fffaf0 0%,#fff 55%)}
+  .sys-block.later{border-color:#ddd4f5;background:linear-gradient(180deg,#f7f4ff 0%,#fff 55%)}
+  .sys-block .slabel{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:5px 10px;border-radius:99px;margin-bottom:12px;
+  }
+  .sys-block.lock .slabel{color:var(--brand-2);background:var(--brand-2-soft)}
+  .sys-block.stretch .slabel{color:var(--gold);background:var(--gold-soft)}
+  .sys-block.later .slabel{color:var(--brand);background:var(--brand-soft)}
+  .sys-block h3{margin:0 0 4px;font-size:18px;letter-spacing:-.015em}
+  .sys-block .sdesc{margin:0 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .sys-pipes{display:flex;flex-wrap:wrap;gap:8px}
+  .sys-pipes span{
+    font-size:12px;font-weight:650;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px;
+  }
+  .sys-block.lock .sys-pipes span{color:#0c5c4f;border-color:#c9e9e0}
+  .sys-block.stretch .sys-pipes span{color:#6f5518;border-color:#f0e2bd}
+  .sys-block.later .sys-pipes span{color:#3d3470;border-color:#ddd4f5}
+
+  .timeline{position:relative;margin:22px 0 0;padding-left:0}
+  .tl-item{display:grid;grid-template-columns:104px 1fr;gap:18px;position:relative;padding-bottom:22px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{
+    content:"";position:absolute;left:104px;top:26px;bottom:-2px;width:2px;
+    background:var(--line);transform:translateX(-1px);
+  }
+  .tl-item:last-child::before{display:none}
+  .tl-time{
+    text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px;
+    color:var(--brand);padding-top:2px;
+  }
+  .tl-body{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 18px;box-shadow:var(--shadow)}
+  .tl-body h5{margin:0 0 5px;font-size:14px;font-weight:650}
+  .tl-body p{margin:0;font-size:13.4px;color:var(--ink-soft)}
+  @media(max-width:620px){
+    .tl-item{grid-template-columns:1fr;gap:8px}
+    .tl-item::before{display:none}
+    .tl-time{text-align:left}
+  }
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;font-size:13.4px;min-width:640px}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    background:#fafbfe;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#fcfcff}
+  .tag{
+    display:inline-block;font-size:11.5px;font-weight:650;padding:3px 9px;border-radius:6px;
+    background:var(--brand-soft);color:var(--brand);white-space:nowrap;
+  }
+  .tag.green{background:var(--brand-2-soft);color:var(--brand-2)}
+  .tag.gold{background:var(--gold-soft);color:var(--gold)}
+
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{position:relative;padding-left:24px;margin-bottom:10px;font-size:14px;color:var(--ink-soft)}
+  ul.clean li::before{
+    content:"";position:absolute;left:7px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--brand);
+  }
+  ul.clean li b,ul.clean li strong{color:var(--ink);font-weight:650}
+  ul.check li::before{
+    content:"✓";left:0;top:0;width:auto;height:auto;background:none;
+    color:var(--brand-2);font-weight:800;font-size:13px;
+  }
+
+  .callout{
+    background:var(--brand-2-soft);border:1px solid #c9e9e0;border-left:3px solid var(--brand-2);
+    border-radius:10px;padding:16px 18px;font-size:13.8px;color:#0c5c4f;
+  }
+  .callout b{color:#08423a}
+  .callout.warn{background:var(--gold-soft);border-color:#f0e2bd;border-left-color:var(--gold);color:#6f5518}
+  .callout.warn b{color:#54400f}
+  .callout.soft{background:var(--brand-soft);border-color:#ddd4f5;border-left-color:var(--brand);color:#3d3470}
+  .callout.soft b{color:#2c2555}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    background:#fff;border:1px solid var(--line);border-radius:99px;
+    padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-soft);
+  }
+
+  .flowstrip{
+    display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin:22px 0 8px;
+  }
+  @media(max-width:900px){
+    .flowstrip{grid-template-columns:repeat(4,1fr);gap:10px}
+    .flow-node:nth-child(4)::after{display:none}
+  }
+  @media(max-width:560px){
+    .flowstrip{grid-template-columns:1fr 1fr}
+    .flow-node:nth-child(even)::after{display:none}
+  }
+  .flow-node{text-align:center;padding:0 6px;position:relative}
+  .flow-node::after{
+    content:"→";position:absolute;right:-4px;top:16px;color:var(--muted);font-size:15px;font-weight:600;
+  }
+  .flow-node:last-child::after{display:none}
+  .flow-node .n{
+    width:34px;height:34px;border-radius:10px;background:var(--brand);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:12px;margin-bottom:8px;
+  }
+  .flow-node h5{margin:0 0 2px;font-size:12.5px;font-weight:700}
+  .flow-node p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.35}
+
+  .jstep{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start;margin-top:28px}
+  .jstep.reverse{grid-template-columns:1.15fr 1fr}
+  .jstep.full{grid-template-columns:1fr}
+  @media(max-width:860px){
+    .jstep,.jstep.reverse{grid-template-columns:1fr}
+  }
+  .jcopy h4{margin-top:0}
+  .jcopy p{font-size:14.2px;color:var(--ink-soft)}
+
+  .phone{
+    width:100%;max-width:380px;margin:0 auto;background:#fff;
+    border:1px solid var(--line);border-radius:26px;padding:14px;
+    box-shadow:0 18px 44px rgba(26,28,44,.14);
+  }
+  .ph-top{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;padding:0 6px 10px;font-weight:600}
+  .ph-app{
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);
+    font-weight:700;margin-bottom:8px;
+  }
+  .ph-greet{font-size:17px;font-weight:700;letter-spacing:-.02em}
+  .ph-date{font-size:12.5px;color:var(--muted);margin-top:1px}
+  .ph-lit{
+    margin-top:10px;background:var(--gold-soft);color:#7d6220;border:1px solid #f0e2bd;
+    font-size:12px;font-weight:650;padding:7px 11px;border-radius:8px;
+  }
+  .ph-block{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:13px}
+  .ph-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
+  .ph-btn{
+    display:block;width:100%;text-align:center;font-size:13px;font-weight:650;
+    padding:10px;border-radius:9px;margin-top:8px;border:1px solid transparent;
+  }
+  .ph-btn.primary{background:var(--brand);color:#fff}
+  .ph-btn.ghost{background:#f4f6fd;color:var(--ink-soft);border-color:var(--line)}
+  .ph-btn.green{background:var(--brand-2);color:#fff}
+
+  .chat{display:flex;flex-direction:column;gap:10px}
+  .bubble{
+    max-width:92%;padding:10px 12px;border-radius:12px;font-size:12.6px;line-height:1.45;
+  }
+  .bubble.bot{
+    background:#f4f6fd;color:var(--ink);border:1px solid var(--line);
+    border-bottom-left-radius:4px;align-self:flex-start;
+  }
+  .bubble.me{
+    background:var(--brand);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;
+  }
+  .bubble .who{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:4px;opacity:.7}
+  .choice{
+    border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;margin-top:7px;background:#fff;cursor:default;
+  }
+  .choice.on{border-color:var(--brand);background:var(--brand-soft)}
+  .choice b{display:block;font-size:12.5px;margin-bottom:2px}
+  .choice span{font-size:11.5px;color:var(--muted)}
+
+  .drop{
+    border:1.6px dashed #c9cde0;border-radius:10px;padding:14px;text-align:center;
+    background:#fafbfe;color:var(--muted);font-size:12px;margin-top:8px;
+  }
+  .drop.on{border-color:#c9e9e0;background:var(--brand-2-soft);color:#0c5c4f}
+  .drop b{display:block;color:var(--ink);margin-bottom:3px}
+
+  .desk{
+    background:#e8eaf2;border:1px solid var(--line);border-radius:16px;
+    padding:12px;box-shadow:var(--shadow);
+  }
+  .desk-chrome{
+    display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+    border-radius:10px 10px 0 0;padding:9px 12px;
+  }
+  .desk-dots{display:flex;gap:5px}
+  .desk-dots i{width:9px;height:9px;border-radius:50%;display:block;background:#d5d9e8}
+  .desk-dots i:nth-child(1){background:#ff6b6b}
+  .desk-dots i:nth-child(2){background:#f5c542}
+  .desk-dots i:nth-child(3){background:#51cf66}
+  .desk-url{
+    flex:1;background:#f4f5fa;border:1px solid var(--line);border-radius:7px;
+    padding:5px 12px;font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .desk-body{
+    background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;overflow:hidden;
+  }
+  .desk-navrow{
+    display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:#fafbfe;
+    font-size:12px;font-weight:650;color:var(--muted);
+  }
+  .desk-navrow span.on{color:var(--brand);background:var(--brand-soft);padding:4px 9px;border-radius:7px}
+  .desk-navrow span{padding:4px 9px}
+  .desk-main{padding:16px 18px}
+  .field{margin-bottom:11px}
+  .field label{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:5px}
+  .field .boxish{
+    border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13px;background:#fafbfe;color:var(--ink);
+  }
+  .field.half{flex:1}
+  .fieldrow{display:flex;gap:10px}
+  @media(max-width:560px){.fieldrow{flex-direction:column}}
+
+  .split{
+    display:grid;grid-template-columns:1fr 1fr;min-height:420px;
+  }
+  @media(max-width:760px){.split{grid-template-columns:1fr}}
+  .split-left{border-right:1px solid var(--line);padding:14px 16px;background:#fff}
+  .split-right{padding:16px;background:#f3f4f8}
+  .editline{
+    font-size:12.6px;padding:7px 0;border-bottom:1px dashed var(--line);color:var(--ink-soft);
+  }
+  .editline b{color:var(--ink)}
+  .editline.hi{background:#fff6d6;margin:0 -8px;padding:7px 8px;border-radius:6px;border-bottom:none}
+
+  .leaflet{
+    background:#fff;border:1px solid #d8dbe8;border-radius:4px;
+    box-shadow:0 10px 28px rgba(26,28,44,.12);
+    max-width:320px;margin:0 auto;overflow:hidden;
+  }
+  .leaflet-cover{
+    background:linear-gradient(180deg,#2c2555 0%,#5a4a20 100%);
+    color:#f7efd4;padding:28px 20px 22px;text-align:center;min-height:168px;
+  }
+  .leaflet-cover .season{font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;margin-bottom:10px}
+  .leaflet-cover h6{margin:0 0 8px;font-size:22px;letter-spacing:-.02em;font-family:Georgia,serif;font-weight:600}
+  .leaflet-cover p{margin:0;font-size:12px;opacity:.85}
+  .leaflet-body{padding:14px 16px 16px}
+  .leaflet-body h6{margin:0 0 6px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+  .leaflet-body p{margin:0 0 10px;font-size:11.5px;color:var(--ink-soft);line-height:1.45}
+  .leaflet-foot{border-top:1px solid var(--line);padding:10px 16px 12px;font-size:9.5px;color:var(--muted);line-height:1.4}
+
+  .hymn{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .hymn:last-child{border-bottom:none}
+  .hymn b{font-weight:650}
+  .hymn span{color:var(--muted);white-space:nowrap}
+
+  .clip{
+    background:#11131c;color:#fff;border-radius:14px;overflow:hidden;
+    aspect-ratio:9/16;max-width:210px;margin:0 auto;position:relative;
+    box-shadow:0 16px 36px rgba(26,28,44,.2);
+  }
+  .clip .stage{
+    height:100%;background:
+      radial-gradient(circle at 50% 30%,#4b3f8f 0%,transparent 50%),
+      linear-gradient(180deg,#2c2555,#11131c);
+    padding:16px 14px;display:flex;flex-direction:column;justify-content:flex-end;
+  }
+  .clip .draft{
+    position:absolute;top:12px;left:12px;
+    background:#f5c542;color:#3a2d00;font-size:10px;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:5px;
+  }
+  .clip .cap{
+    background:rgba(0,0,0,.45);border-radius:8px;padding:8px 10px;
+    font-size:12.5px;font-weight:650;line-height:1.35;margin-bottom:10px;
+  }
+  .clip .meta{font-size:10.5px;opacity:.7}
+
+  .mockcap{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
+
+  footer{padding:38px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  footer b{color:var(--ink-soft)}
+
+  @media print{
+    body{background:#fff}
+    .topbar{display:none}
+    section{page-break-inside:avoid;padding:26px 0}
+    .cover{background:#4b3f8f !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .card,.stat,.tl-body,.tablewrap,.phone,.desk,.leaflet{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">Church Communications Agent</div>
+    <nav>
+      <a href="#why">Why this</a>
+      <a href="#need">Your inputs</a>
+      <a href="#phases">Phases</a>
+      <a href="#journey">Wednesday journey</a>
+      <a href="#stretch">Stretch</a>
+      <a href="#phase2">Phase 2</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#markup">Mark this up</a>
+    </nav>
+  </div>
+</div>
+
+<section class="cover">
+  <div class="wrap">
+    <div class="eyebrow">Product proposal</div>
+    <h1>Church Communications Agent</h1>
+    <p class="sub">A Wednesday in the life of a rector, and the Phase 1 / Phase 2 specification behind it.<br>
+    Prepared for <strong>Lorenzo</strong> by Parag and the development team.</p>
+    <div class="meta">
+      <div><span>Document</span><b>Scope review draft</b></div>
+      <div><span>Target</span><b>January / Q1 launch</b></div>
+      <div><span>First job</span><b>Sunday bulletin</b></div>
+      <div><span>Next</span><b>Mark what to move</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="glance">
+  <div class="wrap">
+    <div class="kicker">At a glance</div>
+    <h2>One weekly job, so clergy can trust an agent</h2>
+    <p class="lede">Parish clergy already spend at least two hours a week assembling the Sunday leaflet. This agent takes that unholy work so they can do the holy work. The bulletin is the first job. The name leaves room for newsletter, press, and sermon clips later.</p>
+    <div class="grid g4" style="margin-top:26px">
+      <div class="stat"><b>2+ hrs</b><span>Weekly priest time this is meant to give back</span></div>
+      <div class="stat"><b>3 years</b><span>RCL cycle: Year A, B, and C, with propers and feasts</span></div>
+      <div class="stat"><b>2 tracks</b><span>Stored on the parish profile, not asked every Sunday</span></div>
+      <div class="stat"><b>Jan</b><span>Ready enough to launch in Q1, if samples arrive first</span></div>
+    </div>
+    <div class="grid g3" style="margin-top:16px">
+      <div class="card">
+        <h4 style="margin-top:0">Communications Agent, not bulletin maker</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">The Sunday leaflet is the wedge. The product is named so we can add newsletter, press release, and sermon clips once clergy trust it.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Start small, stay in control</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Church people who are wary of AI will try a repetitive weekly task. The priest always approves before anyone prints or posts.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Episcopal / RCL first</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Phase 1 follows the calendar you walked through on the call. Other denominations can come later. Related church work gives us dates only.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="kicker">The brief</div>
+    <h2>Why this, and why now</h2>
+    <p class="lede">You called bulletin-making the unholy work of being a priest. The point of this agent is to take that work so the priest can visit hospitals, bless people, and be with the congregation.</p>
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card">
+        <h4 style="margin-top:0">What changes every week</h4>
+        <ul class="clean">
+          <li><b>Readings</b> from the Revised Common Lectionary</li>
+          <li><b>Cover image</b></li>
+          <li><b>Songs / hymns</b></li>
+          <li><b>Announcements</b></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">What stays in the template</h4>
+        <ul class="clean">
+          <li><b>Order of service</b> and other static liturgy</li>
+          <li><b>Collect and weekly propers</b> that appear on your samples</li>
+          <li><b>Parish defaults:</b> name, translation, OneLicense number, season track</li>
+          <li><b>Two footers:</b> music license and AI disclosure</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout soft" style="margin-top:18px">
+      <b>How the calendar actually asks questions.</b> In ordinary time, if a major feast overlaps a Sunday, the agent asks the question from the call: <i>All Saints' Day or Proper 26?</i> Track 1 vs Track 2 is chosen at the start of the season and stored on the parish. Outside ordinary time — Advent, Christmas, Lent, Easter — there is no fork. The agent confirms the day and moves on.
+    </div>
+  </div>
+</section>
+
+<section id="need">
+  <div class="wrap">
+    <div class="kicker">Client deliverables</div>
+    <h2>What we need from you before build</h2>
+    <p class="lede">You offered to send sample bulletin PDFs so we can see how congregations actually put everything on the page. We should start from those, not from a generic booklet.</p>
+    <div class="tablewrap" style="margin-top:22px">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Sample</th>
+            <th>Why we need it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><b>Ordinary-time Sunday</b></td>
+            <td>Default weekly leaflet: green season, Track 1 or 2 already chosen.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><b>Feast on a Sunday</b></td>
+            <td>The All Saints vs Proper fork from the call. White / gold cover and feast readings.</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><b>Advent or another closed season</b></td>
+            <td>Proves the agent does not invent a choice when the calendar has none.</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><b>Bilingual English / Spanish</b>, if you have one</td>
+            <td>Only needed if you pull the bilingual template into January.</td>
+          </tr>
+          <tr>
+            <td>5–6</td>
+            <td><b>Any layout you want as default</b></td>
+            <td>The first template is cloned from these pages, including static liturgy.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn" style="margin-top:18px">
+      <b>Week 0 dependency.</b> A real Episcopal bulletin is the order of service, not only readings, cover, hymns, and notes. Phase 1 templates lock from your samples.
+    </div>
+  </div>
+</section>
+
+<section id="phases">
+  <div class="wrap">
+    <div class="kicker">Scope map</div>
+    <h2>Phase 1 lock, stretch, and Phase 2</h2>
+    <p class="lede">If something in the stretch column belongs in January, say so. If something in the lock feels too much, we will move it.</p>
+
+    <div class="grid g3" style="margin-top:24px">
+      <div class="sys-block lock">
+        <div class="slabel">January lock</div>
+        <h3>Phase 1 — Sunday bulletin</h3>
+        <p class="sdesc">One job, priest always approves before print.</p>
+        <div class="sys-pipes">
+          <span>Weekly conversation</span>
+          <span>RCL Years A / B / C</span>
+          <span>Feast vs proper, only when it forks</span>
+          <span>Track 1 / 2 as season setting</span>
+          <span>Cover upload</span>
+          <span>OneLicense drop-zone</span>
+          <span>Announcement polish</span>
+          <span>Preview + light edit</span>
+          <span>Print-ready PDF</span>
+          <span>Both footers</span>
+        </div>
+      </div>
+      <div class="sys-block stretch">
+        <div class="slabel">You can pull forward</div>
+        <h3>Phase 1 stretch</h3>
+        <p class="sdesc">Real features. Not required to launch.</p>
+        <div class="sys-pipes">
+          <span>Bilingual EN / ES template</span>
+          <span>Suggested cover-art library</span>
+          <span>Public-domain hymnal</span>
+          <span>Website / Google Calendar</span>
+          <span>Extra layouts</span>
+          <span>Full split-screen editor</span>
+        </div>
+      </div>
+      <div class="sys-block later">
+        <div class="slabel">After clergy trust it</div>
+        <h3>Phase 2 — communications</h3>
+        <p class="sdesc">Why it is not only a bulletin maker.</p>
+        <div class="sys-pipes">
+          <span>Sermon video ingest</span>
+          <span>AI clips + captions</span>
+          <span>Drafts-first posting</span>
+          <span>Optional auto-post later</span>
+          <span>Newsletter from bulletin</span>
+          <span>Press-release interview</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="journey">
+  <div class="wrap">
+    <div class="actbadge">Wednesday journey · Fr. Thomas</div>
+    <h2>What building Sunday’s leaflet looks like</h2>
+    <p class="lede">St. Mark’s is already set up. OneLicense is on file. Track 2 is stored for this ordinary-time stretch. The default template came from your sample bulletins. It is Wednesday morning. Sunday is November 1.</p>
+
+    <div class="flowstrip">
+      <div class="flow-node"><div class="n">0</div><h5>Setup</h5><p>Once, not weekly</p></div>
+      <div class="flow-node"><div class="n">1</div><h5>Sunday</h5><p>Feast or proper</p></div>
+      <div class="flow-node"><div class="n">2</div><h5>Cover</h5><p>Upload image</p></div>
+      <div class="flow-node"><div class="n">3</div><h5>Hymns</h5><p>Titles + JPEGs</p></div>
+      <div class="flow-node"><div class="n">4</div><h5>Notes</h5><p>Bullets to copy</p></div>
+      <div class="flow-node"><div class="n">5</div><h5>Preview</h5><p>Fix, then approve</p></div>
+      <div class="flow-node"><div class="n">6</div><h5>Print</h5><p>PDF + footers</p></div>
+    </div>
+    <p class="mockcap">In Advent the same flow skips step 1. There is no choice to offer.</p>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <div class="actbadge">Step 0 · One-time</div>
+        <h4>Parish setup lives on the profile</h4>
+        <p>The priest or administrator enters the things that should not be retyped every week: church name, OneLicense number, preferred translation, default template, and Track 1 or Track 2 for the season.</p>
+        <p>The license number is reused every week in the required music footer. Track is changed when ordinary time starts, not asked on Wednesday.</p>
+      </div>
+      <div class="desk">
+        <div class="desk-chrome">
+          <div class="desk-dots"><i></i><i></i><i></i></div>
+          <div class="desk-url">agent.stmarks.org / settings / parish</div>
+        </div>
+        <div class="desk-body">
+          <div class="desk-navrow">
+            <span class="on">Parish</span>
+            <span>Template</span>
+            <span>Season</span>
+            <span>License</span>
+          </div>
+          <div class="desk-main">
+            <div class="field"><label>Church name</label><div class="boxish">St. Mark’s Episcopal Church</div></div>
+            <div class="fieldrow">
+              <div class="field half"><label>Translation</label><div class="boxish">NRSV</div></div>
+              <div class="field half"><label>OneLicense</label><div class="boxish">#A-700000</div></div>
+            </div>
+            <div class="fieldrow">
+              <div class="field half"><label>Default template</label><div class="boxish">Sunday leaflet · from your samples</div></div>
+              <div class="field half"><label>Ordinary-time track</label><div class="boxish">Track 2 · thematic</div></div>
+            </div>
+            <div class="ph-btn primary" style="margin-top:4px">Save parish defaults</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mockcap">Indicative setup screen. Track 2 is a season setting, not a weekly question.</div>
+
+    <div class="jstep reverse">
+      <div class="phone">
+        <div class="ph-top"><span>9:12</span><span>▮▮▮ ⌁ ▰</span></div>
+        <div class="ph-app">Communications Agent</div>
+        <div class="ph-greet">Good morning, Fr. Thomas</div>
+        <div class="ph-date">Wednesday · preparing Sunday, November 1</div>
+        <div class="ph-lit">White / gold · All Saints is available this Sunday</div>
+        <div class="chat" style="margin-top:12px">
+          <div class="bubble bot">
+            <span class="who">Agent</span>
+            Sunday is November 1. A major feast overlaps ordinary time. Which readings are we using?
+            <div class="choice on"><b>All Saints’ Day</b><span>Year A · Wisdom 3:1–9 · Psalm 24 · Rev 21:1–6a · John 11:32–44</span></div>
+            <div class="choice"><b>Proper 26</b><span>Year A · Track 2 already on file · Habakkuk 1:1–4; 2:1–4</span></div>
+          </div>
+          <div class="bubble me"><span class="who">Fr. Thomas</span>All Saints. Use the feast.</div>
+          <div class="bubble bot"><span class="who">Agent</span>Locked. I will load the All Saints readings and the Collect of the Day. I will not ask about Track 1 or Track 2.</div>
+        </div>
+      </div>
+      <div class="jcopy">
+        <div class="actbadge">Step 1 · Sunday</div>
+        <h4>Ask only when the calendar actually forks</h4>
+        <p>The agent already knows the Episcopal liturgical calendar. This Wednesday it offers the exact choice from the call: All Saints or Proper 26.</p>
+        <p>Fr. Thomas picks All Saints. Readings, Collect, and liturgical color update. Track 2 stays on the parish profile and is not mentioned.</p>
+        <p>If this were the First Sunday of Advent, the agent would only confirm the day. Year would already have flipped from A to B.</p>
+      </div>
+    </div>
+    <div class="mockcap">Conversational weekly assistant. One question, two honest options, then it gets out of the way.</div>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <div class="actbadge">Step 2 · Cover</div>
+        <h4>The cover image is uploaded, not invented</h4>
+        <p>You said the cover is one of the three things that change every week. Phase 1 is an upload: a parish photo, a youth-ministry graphic, or last year’s All Saints art.</p>
+        <p>A suggested liturgical art library is stretch. If you want it in January, say so. It is not required to launch.</p>
+      </div>
+      <div class="phone">
+        <div class="ph-top"><span>9:14</span><span>▮▮▮ ⌁ ▰</span></div>
+        <div class="ph-app">This Sunday · Cover</div>
+        <div class="ph-greet">All Saints’ Day</div>
+        <div class="ph-date">Sunday, November 1 · Year A</div>
+        <div class="ph-block">
+          <div class="ph-lbl">Cover image</div>
+          <div class="drop">
+            <b>Drop a JPEG or PNG</b>
+            Parish photo, last year’s cover, or a youth graphic
+          </div>
+          <div class="drop on">
+            <b>allsaints-cover.jpg</b>
+            Slotted into the sample template · gold / white season
+          </div>
+        </div>
+        <div class="ph-btn ghost">Use last year’s All Saints cover</div>
+        <div class="ph-btn primary">Continue to hymns</div>
+      </div>
+    </div>
+
+    <div class="jstep reverse">
+      <div class="phone">
+        <div class="ph-top"><span>9:17</span><span>▮▮▮ ⌁ ▰</span></div>
+        <div class="ph-app">This Sunday · Music</div>
+        <div class="chat">
+          <div class="bubble bot"><span class="who">Agent</span>Which hymns are we singing? Hymnal numbers are enough.</div>
+          <div class="bubble me"><span class="who">Fr. Thomas</span>Opening 287, Sequence 620, Offertory 293, Closing 625.</div>
+        </div>
+        <div class="ph-block">
+          <div class="ph-lbl">Reserved score slots</div>
+          <div class="hymn"><b>287 For all the saints</b><span>Opening</span></div>
+          <div class="drop on"><b>287.jpg from OneLicense</b>Dropped · will print at leaflet size</div>
+          <div class="hymn"><b>620 Jerusalem, my happy home</b><span>Sequence</span></div>
+          <div class="drop">Drop the OneLicense JPEG</div>
+          <div class="hymn"><b>293 I sing a song of the saints of God</b><span>Offertory</span></div>
+          <div class="hymn"><b>625 Ye holy angels bright</b><span>Closing</span></div>
+        </div>
+      </div>
+      <div class="jcopy">
+        <div class="actbadge">Step 3 · Hymns</div>
+        <h4>Name the hymns. Drop the JPEGs.</h4>
+        <p>OneLicense does not offer a public developer API, and logging in with a parish password would break publisher terms. Phase 1 does what you described on the call: the priest downloads the JPEG and puts it in the reserved slot.</p>
+        <p>Titles, authors, and the license footer are filled in for them. We are not promising a six-minute bulletin. The questions are quick. Licensed scores still take the usual OneLicense download. The saving is the assembly.</p>
+        <p>A public-domain hymnal catalog can insert scores automatically later if you want that in stretch.</p>
+      </div>
+    </div>
+    <div class="mockcap">Assisted OneLicense workflow. Legal, low-friction, and honest about the remaining download.</div>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <div class="actbadge">Step 4 · Announcements</div>
+        <h4>Rough notes become parish copy</h4>
+        <p>Fr. Thomas pastes the week the way it lives in a notebook. The agent writes them as notices with titles, days, and times.</p>
+        <p>Calendar ingest from the church website or Google Calendar is stretch. If you want it in Phase 1, we will pull upcoming events automatically. Otherwise the priest keeps pasting bullets.</p>
+      </div>
+      <div class="desk">
+        <div class="desk-chrome">
+          <div class="desk-dots"><i></i><i></i><i></i></div>
+          <div class="desk-url">agent.stmarks.org / this-sunday / announcements</div>
+        </div>
+        <div class="desk-body">
+          <div class="desk-main">
+            <div class="grid g2" style="gap:12px">
+              <div>
+                <div class="ph-lbl">What he typed</div>
+                <div class="boxish" style="min-height:148px;font-size:12.5px;line-height:1.5;color:var(--ink-soft)">
+                  vestry tues 7pm library<br>
+                  youth apple picking sat 9am<br>
+                  soup kitchen volunteers needed<br>
+                  feeding of the hungry
+                </div>
+              </div>
+              <div>
+                <div class="ph-lbl">What goes on the leaflet</div>
+                <div class="boxish" style="min-height:148px;font-size:12.5px;line-height:1.5">
+                  <b>Vestry meeting</b><br>Tuesday, 7:00 p.m., parish library.<br><br>
+                  <b>Youth apple picking</b><br>Saturday, 9:00 a.m. Meet at the church.<br><br>
+                  <b>Soup kitchen</b><br>Volunteers needed for the feeding of the hungry.
+                </div>
+              </div>
+            </div>
+            <div class="ph-btn primary" style="margin-top:12px">Use this wording</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mockcap">The priest can still edit a line. The agent does not publish announcements on its own.</div>
+
+    <div class="jstep full">
+      <div class="jcopy">
+        <div class="actbadge">Step 5 · Preview</div>
+        <h4>See the leaflet, fix a line, then approve</h4>
+        <p>Before anything is final, Fr. Thomas sees the assembled bulletin. He can correct a title, a time, or a hymn number. The priest always approves before print. That is the trust rule for Phase 1.</p>
+        <p>A fuller split-screen layout editor is stretch. January needs this: a clear preview and light inline edits, not a design suite.</p>
+      </div>
+      <div class="desk" style="margin-top:14px">
+        <div class="desk-chrome">
+          <div class="desk-dots"><i></i><i></i><i></i></div>
+          <div class="desk-url">agent.stmarks.org / this-sunday / preview</div>
+        </div>
+        <div class="desk-body">
+          <div class="desk-navrow">
+            <span>Chat</span>
+            <span class="on">Preview</span>
+            <span>Print PDF</span>
+          </div>
+          <div class="split">
+            <div class="split-left">
+              <div class="ph-lbl">Edit copy</div>
+              <div class="editline"><b>Sunday</b> · All Saints’ Day · November 1</div>
+              <div class="editline"><b>Collect</b> · Almighty God, you have knit together your elect…</div>
+              <div class="editline"><b>First reading</b> · Wisdom of Solomon 3:1–9</div>
+              <div class="editline"><b>Psalm</b> · 24</div>
+              <div class="editline"><b>Epistle</b> · Revelation 21:1–6a</div>
+              <div class="editline"><b>Gospel</b> · John 11:32–44</div>
+              <div class="editline hi"><b>Opening hymn</b> · 287 For all the saints</div>
+              <div class="editline"><b>Vestry</b> · Tuesday, 7:00 p.m., parish library</div>
+              <div class="ph-btn green" style="margin-top:16px">Approve for print</div>
+            </div>
+            <div class="split-right">
+              <div class="leaflet">
+                <div class="leaflet-cover">
+                  <div class="season">The Episcopal Church · Year A</div>
+                  <h6>All Saints’ Day</h6>
+                  <p>Sunday, November 1<br>St. Mark’s Episcopal Church</p>
+                </div>
+                <div class="leaflet-body">
+                  <h6>The Word of God</h6>
+                  <p>Collect of the Day · First Lesson · Psalm 24 · Revelation 21:1–6a · John 11:32–44</p>
+                  <h6>Hymns</h6>
+                  <p>287 For all the saints · 620 Jerusalem, my happy home · 293 I sing a song of the saints of God · 625 Ye holy angels bright</p>
+                  <h6>Parish notes</h6>
+                  <p>Vestry Tuesday 7 p.m. · Youth apple picking Saturday 9 a.m. · Soup kitchen volunteers needed</p>
+                </div>
+                <div class="leaflet-foot">
+                  Reprinted with permission under ONE LICENSE #A-700000. All rights reserved.<br>
+                  AI was used in the creation of this bulletin.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mockcap">Preview is the product. The priest is still the editor. The agent is the assembler.</div>
+    </div>
+
+    <div class="jstep" style="margin-top:36px">
+      <div class="jcopy">
+        <div class="actbadge">Step 6 · Print</div>
+        <h4>A print-ready PDF, with both required lines</h4>
+        <p>The office copier gets a duplex PDF built from your sample template. Static liturgy stays put. This week’s readings, cover, hymns, and announcements are filled in.</p>
+        <p>Every bulletin prints two footers: the OneLicense credit, and the line you asked for — <i>AI was used in the creation of this bulletin.</i></p>
+      </div>
+      <div>
+        <div class="leaflet">
+          <div class="leaflet-cover">
+            <div class="season">Print-ready PDF · 300 dpi · duplex</div>
+            <h6>All Saints’ Day</h6>
+            <p>The Holy Eucharist<br>Sunday, November 1</p>
+          </div>
+          <div class="leaflet-body">
+            <h6>Order of service</h6>
+            <p>Taken from the sample leaflets you send. The prayers and service text that do not change week to week stay in the template.</p>
+            <h6>This Sunday’s variables</h6>
+            <p>Feast readings · uploaded cover · four hymn scores · polished parish notes.</p>
+          </div>
+          <div class="leaflet-foot">
+            Reprinted with permission under ONE LICENSE #A-700000. All rights reserved.<br>
+            AI was used in the creation of this bulletin.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stretch">
+  <div class="wrap">
+    <div class="kicker">Phase 1 stretch</div>
+    <h2>Real, and not required for January</h2>
+    <p class="lede">Tell us which of these you want in Phase 1. The rest wait until the first leaflet is stable.</p>
+    <div class="tablewrap" style="margin-top:22px">
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>What it is</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Bilingual template</b></td>
+            <td>English and Spanish readings and liturgy side by side, as you described.</td>
+            <td><span class="tag gold">Ask you</span></td>
+          </tr>
+          <tr>
+            <td><b>Suggested cover art</b></td>
+            <td>Royalty-free liturgical images matched to the day’s color and theme.</td>
+            <td><span class="tag gold">Stretch</span></td>
+          </tr>
+          <tr>
+            <td><b>Public-domain hymnal</b></td>
+            <td>Classic scores that insert with no OneLicense download.</td>
+            <td><span class="tag gold">Stretch</span></td>
+          </tr>
+          <tr>
+            <td><b>Calendar ingest</b></td>
+            <td>Upcoming events pulled from the parish website or Google Calendar.</td>
+            <td><span class="tag gold">Stretch</span></td>
+          </tr>
+          <tr>
+            <td><b>Extra layouts</b></td>
+            <td>More folds or booklet styles beyond the first template from your samples.</td>
+            <td><span class="tag gold">Stretch</span></td>
+          </tr>
+          <tr>
+            <td><b>Richer layout editor</b></td>
+            <td>A fuller split-screen editor if simple preview is not enough.</td>
+            <td><span class="tag gold">Stretch</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="phase2">
+  <div class="wrap">
+    <div class="kicker">Phase 2</div>
+    <h2>After clergy trust the weekly job</h2>
+    <p class="lede">None of this is required for the January launch. This is why it is a communications agent.</p>
+
+    <div class="jstep" style="margin-top:10px">
+      <div class="jcopy">
+        <h4>Sunday sermon clips, drafts first</h4>
+        <p>Modeled on the Opus Clip workflow you showed, and on the Virginia priest who already uses it.</p>
+        <p>After a service that is already going out on YouTube or Facebook Live, the agent finds the sermon, pulls the strongest moments, adds captions, and can add a little music. Clips are saved as drafts. The priest reviews and posts.</p>
+        <p>When they trust it, they can let it post. You said he is not there yet. We will not start there.</p>
+      </div>
+      <div>
+        <div class="clip">
+          <div class="stage">
+            <div class="draft">Draft · not posted</div>
+            <div class="cap">“The saints are not far from us. They are the people who taught us how to love.”</div>
+            <div class="meta">All Saints · 0:42 · captions on · ready to review</div>
+          </div>
+        </div>
+        <div class="mockcap">Phase 2A is supervised. Phase 2B auto-post is a toggle the priest turns on later.</div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:28px">
+      <div class="card">
+        <h4 style="margin-top:0">Newsletter</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Once that week’s bulletin is approved, the same material can become an email newsletter. If you want this in Phase 1, say so on the markup list below.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Press release</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">A short interview — a few questions about the feeding program, the festival, the event — then a draft in the format they want, with the same AI disclosure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="kicker">Toward January</div>
+    <h2>Eight weeks, if the samples arrive first</h2>
+    <p class="lede">This is an eight-week build to a parish-ready Phase 1. Stretch items you pull into Phase 1 land in weeks 5–6 if they are small, or they get their own short pass after the first leaflet is stable.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">Week 0</div>
+        <div class="tl-body">
+          <h5>Your sample bulletins</h5>
+          <p>You send 4–6 real leaflets. We lock the default template and the weekly variables from those pages.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Weeks 1–2</div>
+        <div class="tl-body">
+          <h5>Calendar and lectionary</h5>
+          <p>Parish accounts, liturgical calendar, RCL database (Years A, B, C, propers, feast days, Track 1 / Track 2 as a season setting), scripture retrieval.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Weeks 3–4</div>
+        <div class="tl-body">
+          <h5>The Wednesday conversation</h5>
+          <p>Weekly chat, cover upload, hymn titles and OneLicense drop-zone, announcement writing.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Weeks 5–6</div>
+        <div class="tl-body">
+          <h5>Template, preview, PDF</h5>
+          <p>Template from your samples, preview and light edit, print-ready PDF, both compliance footers.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Weeks 7–8</div>
+        <div class="tl-body">
+          <h5>Clergy pilots and January</h5>
+          <p>Real bulletin tests with a few clergy, layout fixes, production deploy for Q1.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="markup">
+  <div class="wrap">
+    <div class="kicker">How to mark this up</div>
+    <h2>Tell us what is missing, or what to move</h2>
+    <p class="lede">Please read this so you can see whether the pieces are right, and so you can move something into Phase 1 or out of it.</p>
+    <div class="tablewrap" style="margin-top:22px">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Question</th>
+            <th>Your note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Are the sample-bulletin types the right set, or should we add another kind of Sunday?</td>
+            <td style="color:var(--muted)">Write here</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>What on the leaflet must be in the January lock besides readings, cover, hymns, announcements, static liturgy, and the two footers?</td>
+            <td style="color:var(--muted)">Write here</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Which stretch items do you want in Phase 1: bilingual template, cover-art library, public-domain hymns, calendar ingest, extra layouts, richer editor?</td>
+            <td style="color:var(--muted)">Write here</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Is newsletter a Phase 1 add, or does it stay in Phase 2?</td>
+            <td style="color:var(--muted)">Write here</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Preferred default translation, if not NRSV?</td>
+            <td style="color:var(--muted)">Write here</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Who are the first clergy you would want in the week 7–8 pilots?</td>
+            <td style="color:var(--muted)">Write here</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="margin-top:20px">
+      Once you send this back, we will lock the Phase 1 set and put kickoff dates on it. The bulletin is the right first agent: weekly, familiar, and useful enough that people will try it.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>Church Communications Agent</b> — scope review draft for Lorenzo.<br>
+    Prepared by Parag and the development team. Target: January / Q1.<br>
+    Traces to the conversation on the Sunday bulletin, OneLicense, and the Opus Clip phase-two idea.
+  </div>
+</footer>
+
+</body>
+</html>
