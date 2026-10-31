@@ -199,9 +199,9 @@
   }
 
   .flowstrip{
-    display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin:22px 0 8px;
+    display:grid;grid-template-columns:repeat(8,1fr);gap:0;margin:22px 0 8px;
   }
-  @media(max-width:900px){
+  @media(max-width:980px){
     .flowstrip{grid-template-columns:repeat(4,1fr);gap:10px}
     .flow-node:nth-child(4)::after{display:none}
   }
@@ -354,6 +354,24 @@
   .hymn b{font-weight:650}
   .hymn span{color:var(--muted);white-space:nowrap}
 
+  .hist{
+    border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;
+  }
+  .hrow{
+    display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;
+    padding:10px 12px;border-top:1px solid var(--line);font-size:12.4px;
+  }
+  .hrow:first-child{border-top:none}
+  .hrow.on{background:var(--brand-soft)}
+  .hrow b{display:block;font-size:12.6px}
+  .hrow small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .hrow .st{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+  .hrow .st.ok{color:var(--brand-2)}
+  .hrow .st.draft{color:var(--gold)}
+  .hrow .go{
+    font-size:11.5px;font-weight:650;color:var(--brand);white-space:nowrap;
+  }
+
   .clip{
     background:#11131c;color:#fff;border-radius:14px;overflow:hidden;
     aspect-ratio:9/16;max-width:210px;margin:0 auto;position:relative;
@@ -398,13 +416,13 @@
     <div class="brand">Church Communications Agent</div>
     <nav>
       <a href="#why">Why this</a>
-      <a href="#need">Your inputs</a>
+      <a href="#need">Your help</a>
       <a href="#phases">Phases</a>
       <a href="#journey">Wednesday journey</a>
       <a href="#stretch">Stretch</a>
       <a href="#phase2">Phase 2</a>
       <a href="#timeline">Timeline</a>
-      <a href="#markup">Mark this up</a>
+      <a href="#markup">Your thoughts</a>
     </nav>
   </div>
 </div>
@@ -419,7 +437,7 @@
       <div><span>Document</span><b>Scope review draft</b></div>
       <div><span>Target</span><b>January / Q1 launch</b></div>
       <div><span>First job</span><b>Sunday bulletin</b></div>
-      <div><span>Next</span><b>Mark what to move</b></div>
+      <div><span>Next</span><b>Glad for your thoughts</b></div>
     </div>
   </div>
 </section>
@@ -485,16 +503,16 @@
 
 <section id="need">
   <div class="wrap">
-    <div class="kicker">Client deliverables</div>
-    <h2>What we need from you before build</h2>
-    <p class="lede">You offered to send sample bulletin PDFs so we can see how congregations actually put everything on the page. We should start from those, not from a generic booklet.</p>
+    <div class="kicker">A request for your help</div>
+    <h2>We will need your help before we move forward</h2>
+    <p class="lede">On the call you kindly offered to send a few real bulletin PDFs so we can see how congregations put everything on the page. We would be grateful for that help before we start building. The first template should come from your leaflets, not from a generic booklet.</p>
     <div class="tablewrap" style="margin-top:22px">
       <table>
         <thead>
           <tr>
             <th>#</th>
             <th>Sample</th>
-            <th>Why we need it</th>
+            <th>Why it helps</th>
           </tr>
         </thead>
         <tbody>
@@ -527,7 +545,7 @@
       </table>
     </div>
     <div class="callout warn" style="margin-top:18px">
-      <b>Week 0 dependency.</b> A real Episcopal bulletin is the order of service, not only readings, cover, hymns, and notes. Phase 1 templates lock from your samples.
+      <b>Why this helps us start well.</b> A real bulletin is the full order of service, not only readings, cover, hymns, and notes. Once you share these samples, we can lock the Phase 1 templates from your pages and move forward.
     </div>
   </div>
 </section>
@@ -536,7 +554,7 @@
   <div class="wrap">
     <div class="kicker">Scope map</div>
     <h2>Phase 1 lock, stretch, and Phase 2</h2>
-    <p class="lede">If something in the stretch column belongs in January, say so. If something in the lock feels too much, we will move it.</p>
+    <p class="lede">If something in the stretch column would help you in January, we can pull it forward. If something in the lock feels like too much, we can move it. We are happy to follow your lead.</p>
 
     <div class="grid g3" style="margin-top:24px">
       <div class="sys-block lock">
@@ -544,6 +562,8 @@
         <h3>Phase 1 — Sunday bulletin</h3>
         <p class="sdesc">One job, priest always approves before print.</p>
         <div class="sys-pipes">
+          <span>Parish login (one church email)</span>
+          <span>Past approved leaflets + reuse</span>
           <span>Weekly conversation</span>
           <span>RCL Years A / B / C</span>
           <span>Feast vs proper, only when it forks</span>
@@ -580,6 +600,8 @@
           <span>Optional auto-post later</span>
           <span>Newsletter from bulletin</span>
           <span>Press-release interview</span>
+          <span>Per-person seats, if needed</span>
+          <span>Sent / posted log</span>
         </div>
       </div>
     </div>
@@ -590,22 +612,97 @@
   <div class="wrap">
     <div class="actbadge">Wednesday journey · Fr. Thomas</div>
     <h2>What building Sunday’s leaflet looks like</h2>
-    <p class="lede">St. Mark’s is already set up. OneLicense is on file. Track 2 is stored for this ordinary-time stretch. The default template came from your sample bulletins. It is Wednesday morning. Sunday is November 1.</p>
+    <p class="lede">St. Mark’s has one parish login. OneLicense is on file. Track 2 is stored for this ordinary-time stretch. The default template came from your sample bulletins. It is Wednesday morning. Sunday is November 1.</p>
 
     <div class="flowstrip">
-      <div class="flow-node"><div class="n">0</div><h5>Setup</h5><p>Once, not weekly</p></div>
-      <div class="flow-node"><div class="n">1</div><h5>Sunday</h5><p>Feast or proper</p></div>
-      <div class="flow-node"><div class="n">2</div><h5>Cover</h5><p>Upload image</p></div>
-      <div class="flow-node"><div class="n">3</div><h5>Hymns</h5><p>Titles + JPEGs</p></div>
-      <div class="flow-node"><div class="n">4</div><h5>Notes</h5><p>Bullets to copy</p></div>
-      <div class="flow-node"><div class="n">5</div><h5>Preview</h5><p>Fix, then approve</p></div>
-      <div class="flow-node"><div class="n">6</div><h5>Print</h5><p>PDF + footers</p></div>
+      <div class="flow-node"><div class="n">0</div><h5>Sign in</h5><p>Parish email</p></div>
+      <div class="flow-node"><div class="n">1</div><h5>Past</h5><p>Reuse or start</p></div>
+      <div class="flow-node"><div class="n">2</div><h5>Sunday</h5><p>Feast or proper</p></div>
+      <div class="flow-node"><div class="n">3</div><h5>Cover</h5><p>Upload image</p></div>
+      <div class="flow-node"><div class="n">4</div><h5>Hymns</h5><p>Titles + JPEGs</p></div>
+      <div class="flow-node"><div class="n">5</div><h5>Notes</h5><p>Bullets to copy</p></div>
+      <div class="flow-node"><div class="n">6</div><h5>Preview</h5><p>Fix, then approve</p></div>
+      <div class="flow-node"><div class="n">7</div><h5>Print</h5><p>PDF + footers</p></div>
     </div>
-    <p class="mockcap">In Advent the same flow skips step 1. There is no choice to offer.</p>
+    <p class="mockcap">First visit also includes parish setup. In Advent the Sunday step has no feast / proper choice.</p>
 
     <div class="jstep">
       <div class="jcopy">
-        <div class="actbadge">Step 0 · One-time</div>
+        <div class="actbadge">Step 0 · Sign in</div>
+        <h4>One parish door, not a personal account</h4>
+        <p>January needs a login so the church’s defaults, drafts, and past leaflets follow the office, not one browser. St. Mark’s uses one email. A magic link opens the parish. The secretary and the rector can both use it.</p>
+        <p>Per-person seats wait until a rector and an assistant must not overwrite each other, or until Phase 2 posts as a named person.</p>
+      </div>
+      <div class="phone">
+        <div class="ph-top"><span>9:04</span><span>▮▮▮ ⌁ ▰</span></div>
+        <div class="ph-app">Communications Agent</div>
+        <div class="ph-greet">Sign in to your parish</div>
+        <div class="ph-date">One login for the church office</div>
+        <div class="ph-block">
+          <div class="ph-lbl">Parish email</div>
+          <div class="boxish" style="margin-bottom:10px">office@stmarks.org</div>
+          <div class="ph-btn primary">Email me a sign-in link</div>
+          <div class="ph-btn ghost">Use password instead</div>
+        </div>
+        <p style="margin:12px 4px 0;font-size:11.5px;color:var(--muted)">Not Google. Not a diocese directory. Just this parish.</p>
+      </div>
+    </div>
+    <div class="mockcap">Parish-level login. The number, template, and leaflet history stay with St. Mark’s.</div>
+
+    <div class="jstep reverse">
+      <div class="desk">
+        <div class="desk-chrome">
+          <div class="desk-dots"><i></i><i></i><i></i></div>
+          <div class="desk-url">agent.stmarks.org / leaflets</div>
+        </div>
+        <div class="desk-body">
+          <div class="desk-navrow">
+            <span class="on">Leaflets</span>
+            <span>This Sunday</span>
+            <span>Parish</span>
+          </div>
+          <div class="desk-main">
+            <div class="ph-lbl">This week</div>
+            <div class="hist" style="margin-bottom:14px">
+              <div class="hrow">
+                <div><b>Sunday, November 1, 2026</b><small>Not started · All Saints is available</small></div>
+                <span class="st draft">Draft</span>
+                <span class="go">Start fresh</span>
+              </div>
+            </div>
+            <div class="ph-lbl">Approved this cycle</div>
+            <div class="hist">
+              <div class="hrow on">
+                <div><b>All Saints’ Day · November 1, 2025</b><small>Year A · last time this Sunday came around</small></div>
+                <span class="st ok">Approved</span>
+                <span class="go">Start from this</span>
+              </div>
+              <div class="hrow">
+                <div><b>Proper 25 · October 26, 2025</b><small>Ordinary time · Track 2</small></div>
+                <span class="st ok">Approved</span>
+                <span class="go">Open PDF</span>
+              </div>
+              <div class="hrow">
+                <div><b>Proper 24 · October 19, 2025</b><small>Ordinary time · Track 2</small></div>
+                <span class="st ok">Approved</span>
+                <span class="go">Open PDF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="jcopy">
+        <div class="actbadge">Step 1 · Past leaflets</div>
+        <h4>Show what they already approved, not what they “sent”</h4>
+        <p>Phase 1 prints. It does not send. The shelf is last year’s matching Sunday and this year’s approved PDFs. Fr. Thomas can start fresh or start from last All Saints, because the reading cycle comes around again.</p>
+        <p>Drafts and approved stay separate so nobody reprints a half-finished leaflet. A sent / posted log waits for newsletter and clips in Phase 2.</p>
+      </div>
+    </div>
+    <div class="mockcap">Reuse is the point of the three-year calendar. “Start from this” copies last All Saints into this week’s draft.</div>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <div class="actbadge">First visit · One-time</div>
         <h4>Parish setup lives on the profile</h4>
         <p>The priest or administrator enters the things that should not be retyped every week: church name, OneLicense number, preferred translation, default template, and Track 1 or Track 2 for the season.</p>
         <p>The license number is reused every week in the required music footer. Track is changed when ordinary time starts, not asked on Wednesday.</p>
@@ -658,7 +755,7 @@
         </div>
       </div>
       <div class="jcopy">
-        <div class="actbadge">Step 1 · Sunday</div>
+        <div class="actbadge">Step 2 · Sunday</div>
         <h4>Ask only when the calendar actually forks</h4>
         <p>The agent already knows the Episcopal liturgical calendar. This Wednesday it offers the exact choice from the call: All Saints or Proper 26.</p>
         <p>Fr. Thomas picks All Saints. Readings, Collect, and liturgical color update. Track 2 stays on the parish profile and is not mentioned.</p>
@@ -669,10 +766,10 @@
 
     <div class="jstep">
       <div class="jcopy">
-        <div class="actbadge">Step 2 · Cover</div>
+        <div class="actbadge">Step 3 · Cover</div>
         <h4>The cover image is uploaded, not invented</h4>
         <p>You said the cover is one of the three things that change every week. Phase 1 is an upload: a parish photo, a youth-ministry graphic, or last year’s All Saints art.</p>
-        <p>A suggested liturgical art library is stretch. If you want it in January, say so. It is not required to launch.</p>
+        <p>A suggested liturgical art library can wait. If it would help you in January, we would be glad to include it.</p>
       </div>
       <div class="phone">
         <div class="ph-top"><span>9:14</span><span>▮▮▮ ⌁ ▰</span></div>
@@ -714,21 +811,21 @@
         </div>
       </div>
       <div class="jcopy">
-        <div class="actbadge">Step 3 · Hymns</div>
+        <div class="actbadge">Step 4 · Hymns</div>
         <h4>Name the hymns. Drop the JPEGs.</h4>
         <p>OneLicense does not offer a public developer API, and logging in with a parish password would break publisher terms. Phase 1 does what you described on the call: the priest downloads the JPEG and puts it in the reserved slot.</p>
         <p>Titles, authors, and the license footer are filled in for them. We are not promising a six-minute bulletin. The questions are quick. Licensed scores still take the usual OneLicense download. The saving is the assembly.</p>
-        <p>A public-domain hymnal catalog can insert scores automatically later if you want that in stretch.</p>
+        <p>A public-domain hymnal catalog can insert scores automatically later, if that would be useful.</p>
       </div>
     </div>
     <div class="mockcap">Assisted OneLicense workflow. Legal, low-friction, and honest about the remaining download.</div>
 
     <div class="jstep">
       <div class="jcopy">
-        <div class="actbadge">Step 4 · Announcements</div>
+        <div class="actbadge">Step 5 · Announcements</div>
         <h4>Rough notes become parish copy</h4>
         <p>Fr. Thomas pastes the week the way it lives in a notebook. The agent writes them as notices with titles, days, and times.</p>
-        <p>Calendar ingest from the church website or Google Calendar is stretch. If you want it in Phase 1, we will pull upcoming events automatically. Otherwise the priest keeps pasting bullets.</p>
+        <p>Calendar ingest from the church website or Google Calendar can wait. If you would like it in Phase 1, we will pull upcoming events automatically. Otherwise the priest keeps pasting bullets.</p>
       </div>
       <div class="desk">
         <div class="desk-chrome">
@@ -765,7 +862,7 @@
 
     <div class="jstep full">
       <div class="jcopy">
-        <div class="actbadge">Step 5 · Preview</div>
+        <div class="actbadge">Step 6 · Preview</div>
         <h4>See the leaflet, fix a line, then approve</h4>
         <p>Before anything is final, Fr. Thomas sees the assembled bulletin. He can correct a title, a time, or a hymn number. The priest always approves before print. That is the trust rule for Phase 1.</p>
         <p>A fuller split-screen layout editor is stretch. January needs this: a clear preview and light inline edits, not a design suite.</p>
@@ -823,7 +920,7 @@
 
     <div class="jstep" style="margin-top:36px">
       <div class="jcopy">
-        <div class="actbadge">Step 6 · Print</div>
+        <div class="actbadge">Step 7 · Print</div>
         <h4>A print-ready PDF, with both required lines</h4>
         <p>The office copier gets a duplex PDF built from your sample template. Static liturgy stays put. This week’s readings, cover, hymns, and announcements are filled in.</p>
         <p>Every bulletin prints two footers: the OneLicense credit, and the line you asked for — <i>AI was used in the creation of this bulletin.</i></p>
@@ -837,7 +934,7 @@
           </div>
           <div class="leaflet-body">
             <h6>Order of service</h6>
-            <p>Taken from the sample leaflets you send. The prayers and service text that do not change week to week stay in the template.</p>
+            <p>Taken from the sample leaflets you share. The prayers and service text that do not change week to week stay in the template.</p>
             <h6>This Sunday’s variables</h6>
             <p>Feast readings · uploaded cover · four hymn scores · polished parish notes.</p>
           </div>
@@ -855,7 +952,7 @@
   <div class="wrap">
     <div class="kicker">Phase 1 stretch</div>
     <h2>Real, and not required for January</h2>
-    <p class="lede">Tell us which of these you want in Phase 1. The rest wait until the first leaflet is stable.</p>
+    <p class="lede">These can wait until the first leaflet is stable. If any of them would help you in January, we would be glad to pull them forward.</p>
     <div class="tablewrap" style="margin-top:22px">
       <table>
         <thead>
@@ -913,7 +1010,7 @@
         <h4>Sunday sermon clips, drafts first</h4>
         <p>Modeled on the Opus Clip workflow you showed, and on the Virginia priest who already uses it.</p>
         <p>After a service that is already going out on YouTube or Facebook Live, the agent finds the sermon, pulls the strongest moments, adds captions, and can add a little music. Clips are saved as drafts. The priest reviews and posts.</p>
-        <p>When they trust it, they can let it post. You said he is not there yet. We will not start there.</p>
+        <p>When they trust it, they can let it post. You said he is not there yet. We will not start there. If a rector and an assistant both use it, this is when per-person seats and a sent / posted log earn their place.</p>
       </div>
       <div>
         <div class="clip">
@@ -930,7 +1027,7 @@
     <div class="grid g2" style="margin-top:28px">
       <div class="card">
         <h4 style="margin-top:0">Newsletter</h4>
-        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Once that week’s bulletin is approved, the same material can become an email newsletter. If you want this in Phase 1, say so on the markup list below.</p>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Once that week’s bulletin is approved, the same material can become an email newsletter. If you would like that in Phase 1, we would be glad to talk it through.</p>
       </div>
       <div class="card">
         <h4 style="margin-top:0">Press release</h4>
@@ -950,21 +1047,21 @@
         <div class="tl-time">Week 0</div>
         <div class="tl-body">
           <h5>Your sample bulletins</h5>
-          <p>You send 4–6 real leaflets. We lock the default template and the weekly variables from those pages.</p>
+          <p>With your help on sample leaflets, we lock the default template and the weekly variables from those pages.</p>
         </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">Weeks 1–2</div>
         <div class="tl-body">
           <h5>Calendar and lectionary</h5>
-          <p>Parish accounts, liturgical calendar, RCL database (Years A, B, C, propers, feast days, Track 1 / Track 2 as a season setting), scripture retrieval.</p>
+          <p>Parish login (one church email, magic link), parish accounts, liturgical calendar, RCL database (Years A, B, C, propers, feast days, Track 1 / Track 2 as a season setting), scripture retrieval.</p>
         </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">Weeks 3–4</div>
         <div class="tl-body">
           <h5>The Wednesday conversation</h5>
-          <p>Weekly chat, cover upload, hymn titles and OneLicense drop-zone, announcement writing.</p>
+          <p>Past approved leaflet shelf, “start from this one,” weekly chat, cover upload, hymn titles and OneLicense drop-zone, announcement writing.</p>
         </div>
       </div>
       <div class="tl-item">
@@ -987,54 +1084,54 @@
 
 <section id="markup">
   <div class="wrap">
-    <div class="kicker">How to mark this up</div>
-    <h2>Tell us what is missing, or what to move</h2>
-    <p class="lede">Please read this so you can see whether the pieces are right, and so you can move something into Phase 1 or out of it.</p>
+    <div class="kicker">If you have a moment</div>
+    <h2>We would welcome your thoughts</h2>
+    <p class="lede">Whenever you have had a chance to read this, we would be grateful for anything that feels missing or out of place. Nothing here is a form to fill. These are only the questions that would help us get the January set right.</p>
     <div class="tablewrap" style="margin-top:22px">
       <table>
         <thead>
           <tr>
             <th>#</th>
-            <th>Question</th>
-            <th>Your note</th>
+            <th>If useful to weigh in</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>1</td>
-            <td>Are the sample-bulletin types the right set, or should we add another kind of Sunday?</td>
-            <td style="color:var(--muted)">Write here</td>
+            <td>Are these the right kinds of sample Sundays, or would another kind of leaflet help?</td>
+            <td style="color:var(--muted)">Optional</td>
           </tr>
           <tr>
             <td>2</td>
-            <td>What on the leaflet must be in the January lock besides readings, cover, hymns, announcements, static liturgy, and the two footers?</td>
-            <td style="color:var(--muted)">Write here</td>
+            <td>Besides readings, cover, hymns, announcements, static liturgy, and the two footers, is there anything else the January leaflet should include?</td>
+            <td style="color:var(--muted)">Optional</td>
           </tr>
           <tr>
             <td>3</td>
-            <td>Which stretch items do you want in Phase 1: bilingual template, cover-art library, public-domain hymns, calendar ingest, extra layouts, richer editor?</td>
-            <td style="color:var(--muted)">Write here</td>
+            <td>Would any stretch items be useful in Phase 1: bilingual template, cover-art library, public-domain hymns, calendar ingest, extra layouts, or a richer editor?</td>
+            <td style="color:var(--muted)">Optional</td>
           </tr>
           <tr>
             <td>4</td>
-            <td>Is newsletter a Phase 1 add, or does it stay in Phase 2?</td>
-            <td style="color:var(--muted)">Write here</td>
+            <td>Would you like the newsletter in Phase 1, or is Phase 2 still the right place for it?</td>
+            <td style="color:var(--muted)">Optional</td>
           </tr>
           <tr>
             <td>5</td>
-            <td>Preferred default translation, if not NRSV?</td>
-            <td style="color:var(--muted)">Write here</td>
+            <td>Is NRSV the right default translation, or do you prefer another?</td>
+            <td style="color:var(--muted)">Optional</td>
           </tr>
           <tr>
             <td>6</td>
-            <td>Who are the first clergy you would want in the week 7–8 pilots?</td>
-            <td style="color:var(--muted)">Write here</td>
+            <td>If you already have a few clergy in mind for the week 7–8 pilots, we would be glad to know.</td>
+            <td style="color:var(--muted)">Optional</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="callout" style="margin-top:20px">
-      Once you send this back, we will lock the Phase 1 set and put kickoff dates on it. The bulletin is the right first agent: weekly, familiar, and useful enough that people will try it.
+      When you are ready, we can lock the Phase 1 set together and pick dates to start. The bulletin is the right first agent: weekly, familiar, and useful enough that people will try it.
     </div>
   </div>
 </section>
